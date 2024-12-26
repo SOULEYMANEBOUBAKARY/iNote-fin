@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <title>Muhammad Rameez Imdad</title>
+    <!-- Materialize CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <style>
+      .sidebar {
+        height: 100vh;
+        background-color: #f5f5f5;
+        padding-top: 20px;
+        position: fixed;
+        width: 200px;
+      }
+      .main-content {
+        margin-left: 220px;
+        padding: 20px;
+      }
+      .logo {
+        display: block;
+        margin: 0 auto 20px auto;
+        width: 100px;
+        height: 100px;
+      }
+      .sidebar .btn {
+        width: 160px;
+        margin: 10px 20px;
+      }
+      /* Adjusted styles for loginSection to look like WordPress */
+      #loginSection {
+        max-width: 320px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ccd0d4;
+        background-color: #fff;
+      }
+      #loginSection h1 {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      #loginSection img {
+        display: block;
+        margin: 0 auto 20px auto;
+      }
+      body {
+        background-color: #f1f1f1;
+      }
+      @media only screen and (max-width: 600px) {
+        .sidebar {
+          position: relative;
+          width: 100%;
+          height: auto;
+        }
+        .main-content {
+          margin-left: 0;
+        }
+      }
+      .dropdown-content {
+        max-height: 200px; /* Adjust height as needed */
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Login Section -->
+    <div id="loginSection">
+      <img src="https://cdn.bio.link/uploads/profile_pictures/2023-04-16/LtkOkQHLljUSvYcfJpKC8NRFH1q3MfXZ.png" alt="Logo" width="84" height="84">
+      <h1>Login</h1>
+      <form id="loginForm">
+        <div class="input-field">
+          <label for="username">Username or Email Address</label>
+          <input id="username" type="text" name="username" required>
+        </div>
+        <div class="input-field">
+          <label for="password">Password</label>
+          <input id="password" type="password" name="password" required>
+        </div>
+        <button class="btn waves-effect" type="submit">Log In</button>
+      </form>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" style="display:none;">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <img src="https://cdn.bio.link/uploads/profile_pictures/2023-04-16/LtkOkQHLljUSvYcfJpKC8NRFH1q3MfXZ.png" alt="Logo" class="logo">
+        <button class="btn waves-effect" onclick="showSection('addData')">Add Data</button>
+        <button class="btn waves-effect" onclick="showSection('viewData')">View Data</button>
+        <button class="btn waves-effect red" onclick="logout()">Logout</button>
+      </div>
+      <div class="main-content">
+        <!-- Add Data Section -->
+        <div id="addData" class="section">
+          <h5>Add Data</h5>
+          <form id="addDataForm">
+            <div class="row">
+              <div class="input-field col s12 m6">
+                <select id="requirement" name="requirement" required>
+                  <option value="" disabled selected>Choose your option</option>
+                  <!-- Options will be populated dynamically -->
+                </select>
+                <label for="requirement">Requirement</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <select id="jobCategory" name="jobCategory" required>
+                  <option value="" disabled selected>Choose a job category</option>
+                  <!-- Options will be populated dynamically -->
+                </select>
+                <label for="jobCategory">Job Category</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <input id="fullName" type="text" name="fullName" required>
+                <label for="fullName">Full Name</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <input id="fullDetails" type="text" name="fullDetails" required>
+                <label for="fullDetails">Full Details</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <input id="education" type="text" name="education" required>
+                <label for="education">Education</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <input id="approxSalary" type="text" name="approxSalary" required>
+                <label for="approxSalary">Approx Salary</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <input id="officeTiming" type="text" name="officeTiming" required>
+                <label for="officeTiming">Office Timing</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <input id="whatsappNo" type="text" name="whatsappNo" required>
+                <label for="whatsappNo">WhatsApp No</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <input id="eaea" type="text" name="eaea" required>
+                <label for="eaea">EAEA</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <select id="state" name="state" required>
+                  <option value="" disabled selected>Choose your state</option>
+                  <!-- Options will be populated dynamically -->
+                </select>
+                <label for="state">State</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <select id="city" name="city" required>
+                  <option value="" disabled selected>Choose your city</option>
+                  <!-- Options will be populated dynamically -->
+                </select>
+                <label for="city">City</label>
+              </div>
+            </div>
+            <button class="btn waves-effect" type="submit">Submit</button>
+          </form>
+        </div>
+
+        <!-- View Data Section -->
+        <div id="viewData" class="section" style="display:none;">
+          <h5>View Data</h5>
+          <table class="highlight responsive-table" id="dataTable">
+            <thead>
+              <tr id="tableHeaders">
+                <!-- Headers will be inserted here -->
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Data will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Edit Data Modal -->
+        <div id="editDataModal" class="modal">
+          <div class="modal-content">
+            <h5>Edit Data</h5>
+            <form id="editDataForm">
+              <div class="row">
+                <div class="input-field col s12 m6">
+                  <select id="editRequirement" name="requirement" required>
+                    <option value="" disabled selected>Choose your option</option>
+                    <!-- Options will be populated dynamically -->
+                  </select>
+                  <label for="editRequirement">Requirement</label>
+                </div>
+                <div class="input-field col s12 m6">
+                  <select id="editJobCategory" name="jobCategory" required>
+                    <option value="" disabled selected>Choose a job category</option>
+                    <!-- Options will be populated dynamically -->
+                  </select>
+                  <label for="editJobCategory">Job Category</label>
+                </div>
+                <div class="input-field col s12 m6">
+                  <input id="editFullName" type="text" name="fullName" required>
+                  <label for="editFullName">Full Name</label>
+                </div>
+                <div class="input-field col s12 m6">
+                  <input id="editFullDetails" type="text" name="fullDetails" required>
+                  <label for="editFullDetails">Full Details</label>
+                </div>
+                <div class="input-field col s12 m6">
+                  <input id="editEducation" type="text" name="education" required>
+                  <label for="editEducation">Education</label>
+                </div>
+                <div class="input-field col s12 m6">
+                  <input id="editApproxSalary" type="text" name="approxSalary" required>
+                  <label for="editApproxSalary">Approx Salary</label>
+                </div>
+                <div class="input-field col s12 m6">
+                  <input id="editOfficeTiming" type="text" name="officeTiming" required>
+                  <label for="editOfficeTiming">Office Timing</label>
+                </div>
+                <div class="input-field col s12 m6">
+                  <input id="editWhatsappNo" type="text" name="whatsappNo" required>
+                  <label for="editWhatsappNo">WhatsApp No</label>
+                </div>
+                <div class="input-field col s12 m6">
+                  <input id="editEaea" type="text" name="eaea" required>
+                  <label for="editEaea">EAEA</label>
+                </div>
+                <div class="input-field col s12 m6">
+                  <select id="editState" name="state" required>
+                    <option value="" disabled selected>Choose your state</option>
+                    <!-- Options will be populated dynamically -->
+                  </select>
+                  <label for="editState">State</label>
+                </div>
+                <div class="input-field col s12 m6">
+                  <select id="editCity" name="city" required>
+                    <option value="" disabled selected>Choose your city</option>
+                    <!-- Options will be populated dynamically -->
+                  </select>
+                  <label for="editCity">City</label>
+                </div>
+              </div>
+              <input type="hidden" id="editRowIndex">
+              <button class="btn waves-effect" type="submit">Update</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Materialize JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Client-side Script -->
+    <script>
+      var globalDropdownData;
+
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize components
+        var modals = document.querySelectorAll('.modal');
+        M.Modal.init(modals);
+
+        // Initialize select elements
+        var selects = document.querySelectorAll('select');
+        M.FormSelect.init(selects);
+
+        // Check if user is logged in
+        google.script.run.withSuccessHandler(function(response) {
+          if (response.status === 'success') {
+            showApp();
+          } else {
+            showLogin();
+          }
+        }).getUserData();
+
+        // Fetch dropdown data
+        google.script.run.withSuccessHandler(function(response) {
+          if (response.status === 'success') {
+            populateDropdowns(response.data);
+          } else {
+            M.toast({html: response.message, classes: 'red'});
+          }
+        }).getDropdownData();
+      });
+
+      // Show Login Form
+      function showLogin() {
+        document.getElementById('loginSection').style.display = 'block';
+        document.getElementById('app').style.display = 'none';
+      }
+
+      // Show Main App
+      function showApp() {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        showSection('addData');
+      }
+
+      // Handle Login Form Submission
+      document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+        google.script.run.withSuccessHandler(function(response) {
+          if (response.status === 'success') {
+            M.toast({html: response.message, classes: 'green'});
+            showApp();
+          } else {
+            M.toast({html: response.message, classes: 'red'});
+          }
+        }).loginUser(username, password);
+      });
+
+      function populateDropdowns(dropdownData) {
+        globalDropdownData = dropdownData;
+
+        // Populate requirement dropdown
+        var requirementSelect = document.getElementById('requirement');
+        requirementSelect.innerHTML = '<option value="" disabled selected>Choose your option</option>';
+        dropdownData.requirements.forEach(function(requirement) {
+          var option = document.createElement('option');
+          option.value = requirement;
+          option.text = requirement;
+          requirementSelect.appendChild(option);
+        });
+        M.FormSelect.init(requirementSelect);
+
+        // Event listener for requirement change
+        requirementSelect.addEventListener('change', function() {
+          var selectedRequirement = this.value;
+          var jobs = dropdownData.requirementJobMap[selectedRequirement] || [];
+          var jobCategorySelect = document.getElementById('jobCategory');
+          jobCategorySelect.innerHTML = '<option value="" disabled selected>Choose a job category</option>';
+          jobs.forEach(function(job) {
+            var option = document.createElement('option');
+            option.value = job;
+            option.text = job;
+            jobCategorySelect.appendChild(option);
+          });
+          M.FormSelect.init(jobCategorySelect);
+        });
+
+        // Populate state dropdown
+        var stateSelect = document.getElementById('state');
+        stateSelect.innerHTML = '<option value="" disabled selected>Choose your state</option>';
+        dropdownData.states.forEach(function(state) {
+          var option = document.createElement('option');
+          option.value = state;
+          option.text = state;
+          stateSelect.appendChild(option);
+        });
+        M.FormSelect.init(stateSelect);
+
+        // Event listener for state change
+        stateSelect.addEventListener('change', function() {
+          var selectedState = this.value;
+          var cities = dropdownData.stateCityMap[selectedState] || [];
+          var citySelect = document.getElementById('city');
+          citySelect.innerHTML = '<option value="" disabled selected>Choose your city</option>';
+          cities.forEach(function(city) {
+            var option = document.createElement('option');
+            option.value = city;
+            option.text = city;
+            citySelect.appendChild(option);
+          });
+          M.FormSelect.init(citySelect);
+        });
+      }
+
+      function showSection(sectionId) {
+        document.getElementById('addData').style.display = 'none';
+        document.getElementById('viewData').style.display = 'none';
+        document.getElementById(sectionId).style.display = 'block';
+
+        if (sectionId === 'viewData') {
+          fetchData();
+        }
+      }
+
+      // Handle Add Data Form Submission
+      document.getElementById('addDataForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var formData = {
+          requirement: document.getElementById('requirement').value,
+          jobCategory: document.getElementById('jobCategory').value,
+          fullName: document.getElementById('fullName').value,
+          fullDetails: document.getElementById('fullDetails').value,
+          education: document.getElementById('education').value,
+          approxSalary: document.getElementById('approxSalary').value,
+          officeTiming: document.getElementById('officeTiming').value,
+          whatsappNo: document.getElementById('whatsappNo').value,
+          eaea: document.getElementById('eaea').value,
+          city: document.getElementById('city').value,
+          state: document.getElementById('state').value
+        };
+        google.script.run.withSuccessHandler(function(response) {
+          if (response.status === 'success') {
+            M.toast({html: response.message, classes: 'green'});
+            document.getElementById('addDataForm').reset();
+            var selects = document.querySelectorAll('#addDataForm select');
+            selects.forEach(function(select) {
+              select.selectedIndex = 0;
+              M.FormSelect.init(select);
+            });
+          } else {
+            M.toast({html: response.message, classes: 'red'});
+          }
+        }).submitForm(formData);
+      });
+
+      // Fetch Data for View Data Section
+      function fetchData() {
+        google.script.run.withSuccessHandler(function(response) {
+          if (response.status === 'success') {
+            var headers = response.headers;
+            var data = response.data;
+            var tableHeaders = document.getElementById('tableHeaders');
+            tableHeaders.innerHTML = '';
+            headers.forEach(function(header) {
+              var th = document.createElement('th');
+              th.innerText = header;
+              tableHeaders.appendChild(th);
+            });
+            tableHeaders.innerHTML += '<th>Actions</th>';
+
+            var tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            data.forEach(function(row) {
+              var tr = document.createElement('tr');
+              row.data.forEach(function(cell) {
+                var td = document.createElement('td');
+                td.innerText = cell;
+                tr.appendChild(td);
+              });
+              // Actions
+              var actionTd = document.createElement('td');
+              var editBtn = document.createElement('button');
+              editBtn.className = 'btn-small';
+              editBtn.innerText = 'Edit';
+              editBtn.onclick = function() {
+                editData(row.rowIndex);
+              };
+              var deleteBtn = document.createElement('button');
+              deleteBtn.className = 'btn-small red';
+              deleteBtn.innerText = 'Delete';
+              deleteBtn.onclick = function() {
+                deleteData(row.rowIndex);
+              };
+              actionTd.appendChild(editBtn);
+              actionTd.appendChild(deleteBtn);
+              tr.appendChild(actionTd);
+
+              tableBody.appendChild(tr);
+            });
+          } else {
+            M.toast({html: response.message, classes: 'red'});
+          }
+        }).getUserData();
+      }
+
+      // Edit Data
+      function editData(rowIndex) {
+        google.script.run.withSuccessHandler(function(response) {
+          if (response.status === 'success') {
+            var data = response.data;
+
+            // Populate requirement dropdown
+            var editRequirementSelect = document.getElementById('editRequirement');
+            editRequirementSelect.innerHTML = '<option value="" disabled>Choose your option</option>';
+            globalDropdownData.requirements.forEach(function(requirement) {
+              var option = document.createElement('option');
+              option.value = requirement;
+              option.text = requirement;
+              editRequirementSelect.appendChild(option);
+            });
+            editRequirementSelect.value = data.requirement;
+            M.FormSelect.init(editRequirementSelect);
+
+            // Populate jobCategory dropdown based on selected requirement
+            var jobs = globalDropdownData.requirementJobMap[data.requirement] || [];
+            var editJobCategorySelect = document.getElementById('editJobCategory');
+            editJobCategorySelect.innerHTML = '<option value="" disabled>Choose a job category</option>';
+            jobs.forEach(function(job) {
+              var option = document.createElement('option');
+              option.value = job;
+              option.text = job;
+              editJobCategorySelect.appendChild(option);
+            });
+            editJobCategorySelect.value = data.jobCategory;
+            M.FormSelect.init(editJobCategorySelect);
+
+            // Event listener for requirement change in edit form
+            editRequirementSelect.addEventListener('change', function() {
+              var selectedRequirement = this.value;
+              var jobs = globalDropdownData.requirementJobMap[selectedRequirement] || [];
+              var editJobCategorySelect = document.getElementById('editJobCategory');
+              editJobCategorySelect.innerHTML = '<option value="" disabled selected>Choose a job category</option>';
+              jobs.forEach(function(job) {
+                var option = document.createElement('option');
+                option.value = job;
+                option.text = job;
+                editJobCategorySelect.appendChild(option);
+              });
+              M.FormSelect.init(editJobCategorySelect);
+            });
+
+            // Populate state dropdown
+            var editStateSelect = document.getElementById('editState');
+            editStateSelect.innerHTML = '<option value="" disabled>Choose your state</option>';
+            globalDropdownData.states.forEach(function(state) {
+              var option = document.createElement('option');
+              option.value = state;
+              option.text = state;
+              editStateSelect.appendChild(option);
+            });
+            editStateSelect.value = data.state;
+            M.FormSelect.init(editStateSelect);
+
+            // Populate city dropdown based on selected state
+            var cities = globalDropdownData.stateCityMap[data.state] || [];
+            var editCitySelect = document.getElementById('editCity');
+            editCitySelect.innerHTML = '<option value="" disabled>Choose your city</option>';
+            cities.forEach(function(city) {
+              var option = document.createElement('option');
+              option.value = city;
+              option.text = city;
+              editCitySelect.appendChild(option);
+            });
+            editCitySelect.value = data.city;
+            M.FormSelect.init(editCitySelect);
+
+            // Event listener for state change in edit form
+            editStateSelect.addEventListener('change', function() {
+              var selectedState = this.value;
+              var cities = globalDropdownData.stateCityMap[selectedState] || [];
+              var editCitySelect = document.getElementById('editCity');
+              editCitySelect.innerHTML = '<option value="" disabled selected>Choose your city</option>';
+              cities.forEach(function(city) {
+                var option = document.createElement('option');
+                option.value = city;
+                option.text = city;
+                editCitySelect.appendChild(option);
+              });
+              M.FormSelect.init(editCitySelect);
+            });
+
+            // Set other form values
+            document.getElementById('editFullName').value = data.fullName;
+            document.getElementById('editFullDetails').value = data.fullDetails;
+            document.getElementById('editEducation').value = data.education;
+            document.getElementById('editApproxSalary').value = data.approxSalary;
+            document.getElementById('editOfficeTiming').value = data.officeTiming;
+            document.getElementById('editWhatsappNo').value = data.whatsappNo;
+            document.getElementById('editEaea').value = data.eaea;
+
+            document.getElementById('editRowIndex').value = rowIndex;
+            M.updateTextFields();
+            var modal = M.Modal.getInstance(document.getElementById('editDataModal'));
+            modal.open();
+          } else {
+            M.toast({html: response.message, classes: 'red'});
+          }
+        }).getFormData(rowIndex);
+      }
+
+      // Handle Edit Data Form Submission
+      document.getElementById('editDataForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var rowIndex = document.getElementById('editRowIndex').value;
+        var formData = {
+          requirement: document.getElementById('editRequirement').value,
+          jobCategory: document.getElementById('editJobCategory').value,
+          fullName: document.getElementById('editFullName').value,
+          fullDetails: document.getElementById('editFullDetails').value,
+          education: document.getElementById('editEducation').value,
+          approxSalary: document.getElementById('editApproxSalary').value,
+          officeTiming: document.getElementById('editOfficeTiming').value,
+          whatsappNo: document.getElementById('editWhatsappNo').value,
+          eaea: document.getElementById('editEaea').value,
+          city: document.getElementById('editCity').value,
+          state: document.getElementById('editState').value
+        };
+        google.script.run.withSuccessHandler(function(response) {
+          if (response.status === 'success') {
+            M.toast({html: response.message, classes: 'green'});
+            var modal = M.Modal.getInstance(document.getElementById('editDataModal'));
+            modal.close();
+            fetchData();
+          } else {
+            M.toast({html: response.message, classes: 'red'});
+          }
+        }).updateFormData(parseInt(rowIndex), formData);
+      });
+
+      // Delete Data
+      function deleteData(rowIndex) {
+        if (confirm('Are you sure you want to delete this data?')) {
+          google.script.run.withSuccessHandler(function(response) {
+            if (response.status === 'success') {
+              M.toast({html: response.message, classes: 'green'});
+              fetchData();
+            } else {
+              M.toast({html: response.message, classes: 'red'});
+            }
+          }).deleteFormData(rowIndex);
+        }
+      }
+
+      // Logout Function
+      function logout() {
+        google.script.run.withSuccessHandler(function(response) {
+          if (response.status === 'success') {
+            M.toast({html: response.message, classes: 'green'});
+            showLogin();
+          } else {
+            M.toast({html: response.message, classes: 'red'});
+          }
+        }).logoutUser();
+      }
+    </script>
+  </body>
+</html>
